@@ -13,7 +13,7 @@ result = 10 / 0  # ZeroDivisionError
 # Variable doesn't exist
 print(score)  # NameError
 
-# Wrong type
+# Wrong type errror
 print(type("hello" + 5))  # TypeError
 
 # For handling errors
