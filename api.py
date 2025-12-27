@@ -1,8 +1,8 @@
 import requests
 
 # We need coordinates to get weather data
-latitude = 48.85   # Paris latitude
-longitude = 2.35   # Paris longitude
+latitude = 48.85  # Paris latitude
+longitude = 2.35  # Paris longitude
 
 # Build the API URL with our parameters
 url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m"
@@ -13,16 +13,20 @@ data = response.json()
 
 print(data)
 
-temperature = data['current']['temperature_2m']
+temperature = data["current"]["temperature_2m"]
 print(f"Temperature in Paris: {temperature}°C")
 # Output: Temperature in Paris: 20.0°C
 
 import requests
 
+
 def get_weather(latitude, longitude):
-    response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,wind_speed_10m")
+    response = requests.get(
+        f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,wind_speed_10m"
+    )
     data = response.json()
-    return data['current']['temperature_2m']
+    return data["current"]["temperature_2m"]
+
 
 # Get temperature for different cities
 paris_temp = get_weather(48.85, 2.35)
@@ -56,17 +60,19 @@ print(data)
 import pandas as pd
 
 # Extract the daily data
-daily_data = data['daily']
+daily_data = data["daily"]
 
 # Create a DataFrame
-df = pd.DataFrame({
-    'date': daily_data['time'],
-    'max_temp': daily_data['temperature_2m_max'],
-    'min_temp': daily_data['temperature_2m_min']
-})
+df = pd.DataFrame(
+    {
+        "date": daily_data["time"],
+        "max_temp": daily_data["temperature_2m_max"],
+        "min_temp": daily_data["temperature_2m_min"],
+    }
+)
 
 # Convert date strings to datetime
-df['date'] = pd.to_datetime(df['date'])
+df["date"] = pd.to_datetime(df["date"])
 
 print(df)
 
@@ -74,13 +80,13 @@ import matplotlib.pyplot as plt
 
 # Create the plot
 plt.figure(figsize=(10, 6))
-plt.plot(df['date'], df['max_temp'], marker='o', label='Max Temp')
-plt.plot(df['date'], df['min_temp'], marker='o', label='Min Temp')
+plt.plot(df["date"], df["max_temp"], marker="o", label="Max Temp")
+plt.plot(df["date"], df["min_temp"], marker="o", label="Min Temp")
 
 # Add labels and title
-plt.xlabel('Date')
-plt.ylabel('Temperature (°C)')
-plt.title('Paris Weather - Past 7 Days')
+plt.xlabel("Date")
+plt.ylabel("Temperature (°C)")
+plt.title("Paris Weather - Past 7 Days")
 plt.legend()
 
 # Rotate x-axis labels for readability
@@ -88,17 +94,17 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 
 # Save the plot
-plt.savefig('weather_chart.png')
+plt.savefig("weather_chart.png")
 plt.show()
 
 import os
 
 # Create data folder if it doesn't exist
-if not os.path.exists('data'):
-    os.makedirs('data')
+if not os.path.exists("data"):
+    os.makedirs("data")
 
 # Save to CSV
-df.to_csv('data/paris_weather.csv', index=False)
+df.to_csv("data/paris_weather.csv", index=False)
 print("Data saved to data/paris_weather.csv")
 
 # Complete Code
@@ -121,54 +127,57 @@ response = requests.get(url)
 data = response.json()
 
 # 2. Process with pandas
-df = pd.DataFrame({
-    'date': pd.to_datetime(data['daily']['time']),
-    'max_temp': data['daily']['temperature_2m_max'],
-    'min_temp': data['daily']['temperature_2m_min']
-})
+df = pd.DataFrame(
+    {
+        "date": pd.to_datetime(data["daily"]["time"]),
+        "max_temp": data["daily"]["temperature_2m_max"],
+        "min_temp": data["daily"]["temperature_2m_min"],
+    }
+)
 
 # 3. Calculate average
-df['avg_temp'] = (df['max_temp'] + df['min_temp']) / 2
+df["avg_temp"] = (df["max_temp"] + df["min_temp"]) / 2
 
 # 4. Create visualization
 plt.figure(figsize=(10, 6))
-plt.plot(df['date'], df['max_temp'], 'r-o', label='Max')
-plt.plot(df['date'], df['min_temp'], 'b-o', label='Min')
-plt.plot(df['date'], df['avg_temp'], 'g--', label='Average')
+plt.plot(df["date"], df["max_temp"], "r-o", label="Max")
+plt.plot(df["date"], df["min_temp"], "b-o", label="Min")
+plt.plot(df["date"], df["avg_temp"], "g--", label="Average")
 
-plt.xlabel('Date')
-plt.ylabel('Temperature (°C)')
-plt.title('Paris Weather - Past Week')
+plt.xlabel("Date")
+plt.ylabel("Temperature (°C)")
+plt.title("Paris Weather - Past Week")
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.xticks(rotation=45)
 plt.tight_layout()
 
 # 5. Save everything
-if not os.path.exists('data'):
-    os.makedirs('data')
+if not os.path.exists("data"):
+    os.makedirs("data")
 
-plt.savefig('data/weather_chart.png')
-df.to_csv('data/paris_weather.csv', index=False)
+plt.savefig("data/weather_chart.png")
+df.to_csv("data/paris_weather.csv", index=False)
 
 print(f"Average temperature: {df['avg_temp'].mean():.1f}°C")
 print("Files saved in 'data' folder")
 
 
-
 class APIClient:
     def __init__(self, api_key, base_url):
-        self.api_key = api_key      # Each client has its own key
-        self.base_url = base_url    # Each client has its own URL
-        self.request_count = 0      # Track requests per client
+        self.api_key = api_key  # Each client has its own key
+        self.base_url = base_url  # Each client has its own URL
+        self.request_count = 0  # Track requests per client
+
 
 # Creating instances with named arguments
 client1 = APIClient(api_key="key1", base_url="https://api1.com")
 client2 = APIClient(api_key="key2", base_url="https://api2.com")
 
+
 class APIClient:
-    version = "1.0"              # Same for all clients
-    max_retries = 3              # Same for all clients
-    
+    version = "1.0"  # Same for all clients
+    max_retries = 3  # Same for all clients
+
     def __init__(self, api_key):
-        self.api_key = api_key   # Unique to each client
+        self.api_key = api_key  # Unique to each client

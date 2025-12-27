@@ -1,0 +1,71 @@
+Step 1: Open terminal
+Step 2: Navigate to your projects folder
+        # Go to your projects directory
+Step 3: Create the project
+        uv init my-awesome-project
+Step 4: Open in VS Code
+        # Enter the project folder
+          cd my-awesome-project
+        # Open in VS Code
+          code .
+Step 5: Add packages
+        # Add packages you need
+          uv add requests
+          uv add pandas numpy 
+          uv add python-dotenv
+
+        # For interactive Python (optional)
+          uv add ipykernel
+
+Step 6: Test your setup
+
+NOTE:""Edit main.py:""
+
+import requests
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
+
+# Test the setup
+print("✅ Packages imported successfully!")
+
+# Test environment variable
+api_key = os.environ.get("API_KEY", "not-set")
+print(f"✅ API_KEY: {api_key}")
+
+# Test requests
+response = requests.get("https://api.github.com")
+print(f"✅ GitHub API status: {response.status_code}")
+
+Run it:
+uv run python main.py
+
+Step 7: Set up environment variables
+
+Create .env for secrets:
+#In .env
+
+API_KEY=your-secret-key-here
+DATABASE_URL=postgresql://localhost/mydb
+DEBUG=True
+
+Create .env.example for others:
+# .env.example
+
+API_KEY=your-api-key-here
+DATABASE_URL=your-database-url
+DEBUG=True
+Important: .env is already in .gitignore - your secrets are safe!
+​
+Step 8: Initialize Git
+# Initialize Git repository
+git init
+
+# Add all files
+git add .
+
+# First commit
+git commit -m "Initial commit"
+
